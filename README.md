@@ -16,7 +16,7 @@ Router-on-a-stick was implemented to enable communication between the two VLANs.
 
 The network consists of one router, one switch, and four PCs. Each department has two PCs assigned to its respective VLAN.
 
-![Network Topology](screenshots/networktopology.png)
+![Network Topology](screenshots/network%20topology.png)
 
 ## 3. IP Addressing
 
