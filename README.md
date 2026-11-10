@@ -113,6 +113,7 @@ The `show ip interface brief` command verified the router interface and subinter
 
 ```cisco
 interface fa0/4
+switchport mode access
 switchport access vlan 3
 ```
 
