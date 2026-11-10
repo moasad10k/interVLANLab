@@ -1,158 +1,123 @@
 
+
 # Cisco Inter-VLAN Routing
 
 ## 1. Project Overview
 
 This project demonstrates inter-VLAN routing using a Cisco 2901 router and a switch in Cisco Packet Tracer.
 
-The network is divided into two VLANs representing separate departments:
-
-- **VLAN 2 – Management**
-- **VLAN 3 – Finance**
-
-Router-on-a-stick was implemented to enable communication between the two VLANs.
+Two VLANs were created to separate the Management and Finance departments. Router-on-a-stick was configured to allow communication between devices in different VLANs.
 
 ## 2. Network Topology
 
-The network consists of one router, one switch, and four PCs. Each department has two PCs assigned to its respective VLAN.
+The network consists of:
+- 1 Cisco 2901 router
+- 1 switch
+- 4 PCs
+- 2 VLANs
 
-![Network Topology](screenshots/network%20topology.png)
+![Network Topology](screenshots/networktopology.png)
 
 ## 3. IP Addressing
 
-| Device | VLAN | IPv4 Address | Default Gateway |
-|---|---|---|---|
-| PC1 | 2 | 192.168.2.10 | 192.168.2.1 |
-| PC2 | 2 | 192.168.2.11 | 192.168.2.1 |
-| PC3 | 3 | 192.168.3.10 | 192.168.3.1 |
-| PC4 | 3 | 192.168.3.11 | 192.168.3.1 |
+All PCs use a /24 subnet mask (255.255.255.0).
 
-**Subnet Mask:** 255.255.255.0 (/24)
+| PC | IP Address | VLAN | Department | Default Gateway |
+|---|---|---|---|---|
+| PC0 | 192.168.2.10 | VLAN 2 | Management | 192.168.2.1 |
+| PC1 | 192.168.2.11 | VLAN 2 | Management | 192.168.2.1 |
+| PC2 | 192.168.3.10 | VLAN 3 | Finance | 192.168.3.1 |
+| PC3 | 192.168.3.11 | VLAN 3 | Finance | 192.168.3.1 |
 
 ## 4. Configuration & Implementation
 
-### 4.1 VLAN Creation
+### 4.1 VLAN Creation and Switch Port Assignment
 
-Created and named the two VLANs on the switch:
-
+Two VLANs were created:
 - VLAN 2 – Management
 - VLAN 3 – Finance
 
-**VLAN Creation Configuration:**
-
-![VLAN Creation](screenshots/vlan-creation.png)
-
-### 4.2 PC Port Assignment
-
-Assigned the switch access ports to their respective VLANs:
-
+Switch access ports were assigned as follows:
 - Fa0/1–Fa0/2 → VLAN 2
 - Fa0/3–Fa0/4 → VLAN 3
 
-**PC Port Assignment Configuration:**
+![Switch Configuration](screenshots/switchconfiguration.png)
 
-![PC Port Assignment](screenshots/port-assignment.png)
+### 4.2 Initial Connectivity Testing
 
-### 4.3 Initial Connectivity Testing
+Connectivity between PCs in the same VLAN was tested before configuring inter-VLAN routing.
 
-Tested communication between PCs in the same VLAN. Same-VLAN communication was successful, while communication between different VLANs was unsuccessful before inter-VLAN routing was configured.
+![Same VLAN Connectivity](screenshots/connectivitysamevlan.png)
 
-**Same-VLAN Connectivity:**
+Communication between different VLANs was also tested before router configuration.
 
-![Same-VLAN Connectivity](screenshots/connectivity-same-vlan.png)
+![Inter-VLAN Connectivity Before Configuration](screenshots/connectivityintervlanbefore.png)
 
-**Inter-VLAN Connectivity Before Routing:**
+### 4.3 Router Configuration
 
-![Inter-VLAN Before Routing](screenshots/connectivity-inter-vlan-before.png)
+The router's physical interface was enabled using `no shutdown`.
 
-### 4.4 Switch Trunk Configuration
+Subinterfaces were configured for each VLAN using 802.1Q encapsulation:
+- G0/0.2 – VLAN 2 – 192.168.2.1
+- G0/0.3 – VLAN 3 – 192.168.3.1
 
-Configured the switch port connected to the router as a trunk port to carry traffic from both VLANs.
+![Router Configuration](screenshots/routerconfiguration.png)
 
-**Switch Trunk Configuration:**
+### 4.4 Final Connectivity Testing
 
-![Switch Configuration](screenshots/switch-configuration.png)
+After configuring router-on-a-stick, connectivity between VLAN 2 and VLAN 3 was successfully tested.
 
-### 4.5 Router Interface Configuration
+![Inter-VLAN Connectivity After Configuration](screenshots/connectivityintervlanafter.png)
 
-Enabled the router's physical GigabitEthernet interface using `no shutdown`.
+### 4.5 Configuration Verification
 
-**Router Interface Configuration:**
+**VLAN verification:**
 
-![Router Interface Configuration](screenshots/router-interface.png)
+The `show vlan brief` command verified the VLANs and switch port assignments.
 
-### 4.6 Router Subinterface Configuration
+![VLAN Verification](screenshots/vlanbrief.png)
 
-Configured router subinterfaces for each VLAN using 802.1Q encapsulation:
+**Router interface verification:**
 
-- **G0/0.2:** VLAN 2 – 192.168.2.1
-- **G0/0.3:** VLAN 3 – 192.168.3.1
+The `show ip interface brief` command verified the router interface and subinterface status.
 
-**Router Subinterface Configuration:**
-
-![Router Configuration](screenshots/router-configuration.png)
-
-### 4.7 Final Connectivity Testing
-
-Tested communication between PCs in different VLANs. Successful communication confirmed that inter-VLAN routing was working.
-
-**Inter-VLAN Connectivity After Routing:**
-
-![Inter-VLAN After Routing](screenshots/connectivity-inter-vlan-after.png)
-
-### 4.8 Configuration Verification
-
-Verified the VLAN configuration using `show vlan brief`.
-
-**VLAN Verification:**
-
-![VLAN Brief](screenshots/vlan-brief.png)
-
-Verified router interface and subinterface status using `show ip interface brief`.
-
-**Router Interface Verification:**
-
-![Interface Brief](screenshots/interface-brief.png)
+![Router Interface Verification](screenshots/interfacebrief.png)
 
 ## 5. Troubleshooting
 
-### 5.1 Scenario 1: Incorrect Default Gateway
+### Scenario 1: Incorrect Default Gateway
 
-**Problem:** PC1 could communicate with another PC in the same VLAN but could not communicate with a PC in a different VLAN.
+**Problem:** PC0 could communicate with devices in the same VLAN but could not reach devices in another VLAN.
 
-**Diagnosis:** The default gateway configured on PC1 was incorrect.
+**Diagnosis:** PC0 had an incorrect default gateway configured.
 
-**Cause:** PC1 was configured with `192.168.2.254` instead of `192.168.2.1`.
+**Cause:** The configured gateway was `192.168.2.254` instead of `192.168.2.1`.
 
-**Solution:** Corrected PC1's default gateway to `192.168.2.1`.
+**Solution:** Corrected PC0's default gateway to `192.168.2.1`.
 
-**Verification:** Successfully tested communication within and between VLANs after correcting the gateway.
+**Verification:** PC0 successfully communicated with devices in the same VLAN and across VLANs.
 
-**Before Correction:**
+![Incorrect Gateway - Before](screenshots/gatewaytroubleshootingbefore.png)
 
-![Incorrect Default Gateway](screenshots/gateway-troubleshooting-before.png)
+![Incorrect Gateway - After](screenshots/gatewaytroubleshootingafter.png)
 
-**After Correction:**
+### Scenario 2: Incorrect VLAN Assignment
 
-![Correct Default Gateway](screenshots/gateway-troubleshooting-after.png)
+**Problem:** PC3 could not communicate with PC2.
 
-### 5.2 Scenario 2: Incorrect VLAN Assignment
+**Diagnosis:** The `show vlan brief` command revealed that switch port Fa0/4 was assigned to VLAN 2 instead of VLAN 3.
 
-**Status:** PENDING
+**Cause:** PC3 was connected to Fa0/4, which was incorrectly assigned to the Management VLAN.
 
-**Problem:** To be documented after testing.
+**Solution:** Reassigned Fa0/4 to VLAN 3 using:
 
-**Diagnosis:** Pending.
+```cisco
+interface fa0/4
+switchport access vlan 3
+```
 
-**Solution:** Pending.
+**Verification:** PC3 successfully communicated with PC2 after the port was restored to VLAN 3.
 
-**Verification:** Pending.
+![Incorrect VLAN Assignment - Before](screenshots/vlanassignmentbefore.png)
 
-**Before Correction:**
-
-![Incorrect VLAN Assignment](screenshots/vlan-assignment-before.png)
-
-**After Correction:**
-
-
-![Correct VLAN Assignment](screenshots/vlan-assignment-after.png)
+![Incorrect VLAN Assignment - After](screenshots/vlanassignmentafter.png)
