@@ -53,7 +53,15 @@ Communication between different VLANs was also tested before router configuratio
 
 ![Inter-VLAN Connectivity Before Configuration](screenshots/connectivityintervlanbefore.png)
 
-### 4.3 Router Configuration
+### 4.3 Trunk Configuration
+
+The switch uplink port connected to the router was configured as a trunk to carry traffic for both VLANs using 802.1Q encapsulation.
+
+The trunk was configured to allow VLAN 2 and VLAN 3.
+
+![Switch Trunk Configuration](screenshots/switchtrunk.png)
+
+### 4.4 Router Configuration
 
 The router's physical interface was enabled using `no shutdown`.
 
@@ -63,13 +71,13 @@ Subinterfaces were configured for each VLAN using 802.1Q encapsulation:
 
 ![Router Configuration](screenshots/routerconfiguration.png)
 
-### 4.4 Final Connectivity Testing
+### 4.5 Final Connectivity Testing
 
 After configuring router-on-a-stick, connectivity between VLAN 2 and VLAN 3 was successfully tested.
 
 ![Inter-VLAN Connectivity After Configuration](screenshots/connectivityintervlanafter.png)
 
-### 4.5 Configuration Verification
+### 4.6 Configuration Verification
 
 **VLAN verification:**
 
