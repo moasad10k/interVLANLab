@@ -99,13 +99,17 @@ The `show ip interface brief` command verified the router interface and subinter
 
 **Diagnosis:** PC0 had an incorrect default gateway configured.
 
-**Cause:** The configured gateway was `192.168.2.254` instead of `192.168.2.1`.
+**Cause:** The configured gateway was `192.168.2.10` instead of `192.168.2.1`.
 
 **Solution:** Corrected PC0's default gateway to `192.168.2.1`.
 
 **Verification:** PC0 successfully communicated with devices in the same VLAN and across VLANs.
 
+**Before**
+
 ![Incorrect Gateway - Before](screenshots/gatewaytroubleshootingbefore.png)
+
+**After**
 
 ![Incorrect Gateway - After](screenshots/gatewaytroubleshootingafter.png)
 
@@ -127,6 +131,10 @@ switchport access vlan 3
 
 **Verification:** PC3 successfully communicated with PC2 after the port was restored to VLAN 3.
 
+**Before**
+
 ![Incorrect VLAN Assignment - Before](screenshots/vlanassignmentbefore.png)
+
+**After**
 
 ![Incorrect VLAN Assignment - After](screenshots/vlanassignmentafter.png)
