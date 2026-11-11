@@ -117,14 +117,14 @@ The `show ip interface brief` command verified the router interface and subinter
 
 **Problem:** PC3 could not communicate with PC2.
 
-**Diagnosis:** The `show vlan brief` command revealed that switch port Fa0/4 was assigned to VLAN 2 instead of VLAN 3.
+**Diagnosis:** The `show vlan brief` command revealed that switch port f0/4 was assigned to VLAN 2 instead of VLAN 3.
 
-**Cause:** PC3 was connected to Fa0/4, which was incorrectly assigned to the Management VLAN.
+**Cause:** PC3 was connected to f0/4, which was incorrectly assigned to the Management VLAN.
 
-**Solution:** Reassigned Fa0/4 to VLAN 3 using:
+**Solution:** Reassigned f0/4 to VLAN 3 using:
 
 ```cisco
-interface fa0/4
+interface f0/4
 switchport mode access
 switchport access vlan 3
 ```
